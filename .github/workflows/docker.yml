@@ -1,0 +1,33 @@
+name: Docker Build and Push Images
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}   
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASS }}  
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: docker build csharp
+      run: |
+        docker build ./c# -t kumar1996/csharp:1.1.0
+    - name: docker build nodejs
+      run: |
+        docker build ./nodejs -t kumar1996/nodejs:1.1.0
+    - name: docker build python
+      run: |
+        docker build ./python -t kumar1996/python:1.1.0
+    - name: docker build golang
+      run: |
+        docker build ./golang -t kumar1996/golang:1.1.0
+    - name: docker push
+      run: |
+        docker push kumar1996/csharp:1.0.0
+        docker push kumar1996/nodejs:1.0.0
+        docker push kumar1996/golang:1.0.0
+        docker push kumar1996/python:1.0.0
